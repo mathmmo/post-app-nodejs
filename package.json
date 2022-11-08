@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon ./app.js localhost 3000"
+    "start": "nodemon ./app.js localhost 4000"
   },
   "keywords": [],
   "author": "",

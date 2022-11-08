@@ -15,16 +15,23 @@ const mongoose = require('mongoose')
         .connect(`mongodb+srv://${DB_USER}:${DB_PASSWORD}@postappcluster.vpedgrv.mongodb.net/?retryWrites=true&w=majority`)
         .then(() => {
             console.log('Connected to MongoDB PostAppCluster')
-            app.listen(3000)
+            app.listen(4000)
         })
         .catch((err) => console.log(err))
     //Template Engine
-        app.engine('handlebars', handlebars.engine({defaultLayout: 'main'}))
+        app.engine('handlebars', handleBars.engine({defaultLayout: 'main'}))
         app.set('view engine', 'handlebars')
     // Body Parser
         app.use(bodyParser.urlencoded({extended: true}))
         app.use(bodyParser.json())
 
 //Routes
+const adminRoutes = require('./routes/admin')
+app.use('/admin', adminRoutes)
+
+
+
+
+
 
 // Others
