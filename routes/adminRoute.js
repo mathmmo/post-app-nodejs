@@ -5,8 +5,13 @@ router.get('/', (req, res) => {
     res.render('admin/index.handlebars')
 })
 
-router.get('/categories', (req, res) => {
-    res.render('admin/categories')
+router.get('/categories', async (req, res) => {
+    await Category.find().sort({date: 'desc'}).lean().then((categories) => {
+        res.render('admin/categories', {categories: categories})
+    }).catch((error) => {
+        req.flash('error_msg', 'That was an error in your query. Contact support.')
+        res.redirect('/admin')
+    })
 })
 
 router.get('/categories/add', (req, res) => {
@@ -55,6 +60,56 @@ router.post('/categories/new', async (req, res) => {
             res.render('admin/addcategories', {errors: errors})
         })
     }
+})
+
+router.post('/categories/edit', async(req, res) => {
+    const {id, name, slug} = req.body
+    const errors = [];
+    if(!name || typeof name == undefined || name == null){
+        errors.push({
+            status: 422,
+            message: 'Mandatory "Name" parameter is empty or is not valid.'
+        })
+    }
+    if(name.length < 2){
+        errors.push({
+            status: 422,
+            message: 'Mandatory "Name" parameter is to short. Must be at least 2 characters.'
+        })
+    }
+    if(!slug || typeof slug == undefined || slug == null){
+        errors.push({
+            status: 422,
+            message: 'Mandatory "slug" parameter is empty or is not valid.'
+        })
+    }
+
+    if(errors.length > 0){
+        res.render('admin/editcategories', {errors: errors})
+    } else {
+        const category = {
+            name,
+            slug,
+        }
+        await Category.updateOne({_id: id}, category).then(() => {
+            req.flash('success_msg', `Category ${name} updated.`)
+            res.redirect('/admin/categories')
+        }).catch((error) => {
+            req.flash('error_msg', `Failed to update category: ${name}.`)
+            res.redirect('/admin/categories')
+        })
+    }
+})
+
+router.get('/categories/edit/:id', async(req, res) => {
+    const { id } = req.params
+    await Category.findOne({_id: id}).lean().then((category) => {
+        console.log(category)
+        res.render('admin/editcategories', {category: category})
+    }).catch((error) => {
+        req.flash('error_msg', `Failed to find category.`)
+        res.redirect('/admin/categories')
+    })
 })
 
 module.exports = router 

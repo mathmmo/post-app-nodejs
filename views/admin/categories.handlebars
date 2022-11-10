@@ -1,3 +1,22 @@
 <h2>Categories List: </h2>
 <hr>
 <a href="/admin/categories/add"><button class="btn btn-success">New Category</button></a>
+{{#each categories}}
+    <div class="card mt-4">
+        <div class="card-body">
+            <h4>{{name}}</h4>
+            <hr>
+            <div class="card-area">
+                <div class="content-card">
+                    <small>Slug: {{slug}}</small><br>
+                    <small>Creation date: {{date}}</small><br>
+                </div>
+                <div class="btn-card">
+                    <div class="btn1">
+                        <a href="/admin/categories/edit/{{_id}}"><button class="btn btn-success btn-edit">Edit</button></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{{/each}}
