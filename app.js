@@ -8,6 +8,8 @@ const mongoose = require('mongoose')
 const path = require('path')
 const session = require('express-session')
 const flash = require('connect-flash')
+const Post = require('./models/Post')
+const Category = require('./models/Category')
 
 
 //Config
@@ -49,6 +51,70 @@ const flash = require('connect-flash')
 const adminRoutes = require('./routes/adminRoute')
 const { nextTick } = require('process')
 const { runInNewContext } = require('vm')
+const { post } = require('./routes/adminRoute')
 app.use('/admin', adminRoutes)
 
 // Others
+app.get('/', (req, res) => {
+    Post.find().populate({
+        path: 'category',
+        strictPopulate: false
+    }).sort({date: 'desc'}).lean().then((posts) => {
+        posts.forEach((post) => {
+            post.date = post.date.toDateString()
+            let altContent = ''
+            for (let i = 0; i <= 70; i++) {
+                altContent += post.content.split(" ")[i] + " "
+            }
+            altContent += '...'
+            post.content = altContent
+        })
+        const importantPost = posts.find((post) => post.category.slug === 'top1')
+        posts = posts.filter((post) => post !== importantPost)
+
+        const newsPost = posts.find((post) => post.category.slug === 'top2')
+        posts = posts.filter((post) => post !== newsPost)
+
+        const newestPost = posts.shift()
+        
+        Category.find().lean().then((categories) => {
+            res.render('index', {
+                importantPost,
+                newsPost,
+                newestPost,
+                posts,
+                categories,
+            })
+        }).catch((err) => {
+            console.log(`Home page get Posts failed: ${err}`)
+            req.flash('error_msg', 'Comunication with database failed.')
+            res.send('<h1>We had a problem.</h1>')
+        })
+    }).catch((err) => {
+        console.log(`Home page get Posts failed: ${err}`)
+        req.flash('error_msg', 'Comunication with database failed.')
+        res.send('<h1>We had a problem.</h1>')
+    })
+})
+
+app.get('/post/:slug', (req, res) => {
+    const { slug } = req.params
+    Post.findOne({slug: slug}).lean().then((post) => {
+        res.render('./post/index', {post})
+    }).catch((err) => {
+        console.log(`Post page database error: ${err}`)
+        req.flash('error_msg', 'Comunication with database failed.')
+        res.redirect('/')
+    })
+})
+
+app.get('/category/:slug', (req, res) => {
+    const { slug } = req.params
+    Category.findOne({slug: slug}).lean().then((category) => {
+        res.render('./category/index', {category})
+    }).catch((err) => {
+        console.log(`Category page database error: ${err}`)
+        req.flash('error_msg', 'Comunication with database failed.')
+        res.redirect('/')
+    })
+})

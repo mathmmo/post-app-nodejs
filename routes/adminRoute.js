@@ -3,15 +3,16 @@ const Category = require('../models/Category')
 const Post = require('../models/Post')
 
 router.get('/', (req, res) => {
-    const ipAdress = req.socket.remoteAddress
-    console.log(ipAdress)
-    res.render('admin/index.handlebars', {ip: ipAdress})
+    res.render('admin/index.handlebars')
 })
 
 
 //Categories Routes
     router.get('/categories', async (req, res) => {
         await Category.find().sort({date: 'desc'}).lean().then((categories) => {
+            categories.forEach((category) => {
+                category.date = category.date.toDateString()
+            })
             res.render('admin/categories', {categories: categories})
         }).catch((error) => {
             req.flash('error_msg', 'That was an error in your query. Contact support.')
@@ -109,7 +110,6 @@ router.get('/', (req, res) => {
     router.get('/categories/edit/:id', async(req, res) => {
         const { id } = req.params
         await Category.findOne({_id: id}).lean().then((category) => {
-            console.log(category)
             res.render('admin/editcategories', {category: category})
         }).catch((error) => {
             req.flash('error_msg', `Failed to find category.`)
@@ -129,15 +129,98 @@ router.get('/', (req, res) => {
     })
 
 //Posts Routes
-    router.get('/posts', (req, res) => {
-        res.render('admin/posts')
+    router.get('/posts', async (req, res) => {
+        await Post.find()
+        .populate({
+            path: 'category',
+            strictPopulate: false
+        }).sort({date: 'desc'}).lean().then((posts) => {
+            posts.forEach((post) => {
+                post.date = post.date.toDateString()
+            })
+            res.render('admin/posts', {posts: posts})
+        }).catch((error) => {
+            console.log(error)
+            req.flash('error_msg', 'That was an error in your query. Contact support.')
+            res.redirect('/admin')
+        })
     })
 
     router.get('/posts/add', (req, res) => {
         Category.find().lean().then((categories) => {
             res.render('admin/addpost', {categories: categories})
         }).catch((error) => {
+            console.log(error)
             req.flash('error_msg', `Failed to retrive categories.`)
+            res.redirect('/admin/posts')
+        })
+    })
+
+    router.post('/posts/new', async (req, res) => {
+        const { title, slug, description, content, category } = req.body
+        const errors = [];
+        if(title.length < 2 || typeof title == undefined || title == null){
+            errors.push({
+                status: 422,
+                message: 'Mandatory "title" parameter is empty or is not valid.'
+            })
+        }
+        if(slug.length < 2 || typeof slug == undefined || slug == null){
+            errors.push({
+                status: 422,
+                message: 'Mandatory "slug" parameter is empty or is not valid.'
+            })
+        }
+        if(description.length < 2 || typeof description == undefined || description == null){
+            errors.push({
+                status: 422,
+                message: 'Mandatory "description" parameter is empty or is not valid.'
+            })
+        }
+        if(content.length < 2 || typeof content == undefined || content == null){
+            errors.push({
+                status: 422,
+                message: 'Mandatory "content" parameter is empty or is not valid.'
+            })
+        }
+        if(!category || typeof category == undefined || category == null || category == '0'){
+            errors.push({
+                status: 422,
+                message: 'Mandatory "category" parameter is empty or is not valid. Check if that are categories for use.'
+            })
+        }
+
+        if(errors.length > 0){
+            res.render('admin/addpost', {errors: errors})
+        } else {
+            const post = {
+                title,
+                slug,
+                description,
+                content,
+                category
+            }
+            await Post.create(post).then(() => {
+                req.flash('success_msg', `Post ${title} created.`)
+                res.redirect('/admin/posts')
+            }).catch((error) => {
+                req.flash('error_msg', `That is an error in saving the post ${title} in the database.`)
+                errors.push({
+                    status: error.status,
+                    message: 'Post creation failed on database. Seek support assistance.'
+                })
+                res.render('admin/addpost', {errors: errors})
+            })
+        }
+    })
+
+    router.post('/posts/delete', async(req, res) => {
+        const { id } = req.body
+        await Post.deleteOne({_id: id}).then((category) => {
+            req.flash('success_msg', 'Post deleted.')
+            res.redirect('/admin/posts')
+        }).catch((error) => {
+            req.flash('error_msg', `Failed to delete Post.`)
             res.redirect('/admin/posts')
         })
     })

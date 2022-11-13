@@ -1,18 +1,22 @@
 <h2>Posts</h2>
 <hr>
 <a href="/admin/posts/add"><button class="btn btn-success">New Post</button></a>
-{{!-- {{#each categories}}
+{{#each posts}}
     <div class="card mt-4">
         <div class="card-body">
-            <h4>{{name}}</h4>
+            <h4>{{title}}</h4>
             <hr>
-            <small>Slug: {{slug}}</small><br>
+            <p>{{description}}</p>
+            <small>Category: {{category.name}}</small><br>
             <small>Creation date: {{date}}</small><br>
-            <a href="/admin/categories/edit/{{_id}}"><button class="btn btn-success btn-card mt-2">Edit</button></a>
-            <form action="/admin/categories/delete" method="post" onsubmit="return confirm('Do you really want to delete this record?');">
+            <hr>
+            {{!-- <a href="/admin/posts/edit/{{_id}}"><button class="btn btn-success btn-card mt-2">Edit</button></a> --}}
+            <form action="/admin/posts/delete" method="post" onsubmit="return confirm('Do you really want to delete this post?');">
                 <input type="hidden" name="id" value="{{_id}}">
-                <button type="submit" class="btn btn-danger btn-card mt-2">Delete</button>
+                <button type="submit" class="btn btn-danger btn-card">Delete</button>
             </form>
         </div>
     </div>
-{{/each}} --}}
+{{else}}
+    <p>That is no posts in our database.</p>
+{{/each}}
