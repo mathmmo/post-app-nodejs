@@ -1,18 +1,12 @@
-<main class="container mb-4" style="
-    padding: 8pt;
-    background: rgb(253, 247, 229);
-    border-radius: 8px;
-">
-    <article class="blog-post mb-4 pb-4">
-        <div class="mb-2">
-        <h3 class="mb-0 fst-italic">
-            {{post.title}}
-        </h3>
-        <small>{{post.date}}</small> - 
-        <small>{{post.category.name}}</small>
-        </div>
-        <p>{{post.description}}</p>
-        <hr>
-        <p class="mb-1">{{post.content}}</p>
-    </article>
-</main>
+<article class="blog-post mb-4 pb-4">
+    <div class="mb-2">
+    <h3 class="mb-0 fst-italic">
+        {{post.title}}
+    </h3>
+    <small>{{post.date}}</small> - 
+    <small>{{post.category.name}}</small>
+    </div>
+    <p>{{post.description}}</p>
+    <hr>
+    <p class="mb-1">{{post.content}}</p>
+</article>

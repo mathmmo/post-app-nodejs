@@ -1,0 +1,20 @@
+{{#each errors}}
+    <div class="alert alert-danger">Error: {{status}} - {{message}}</div>
+{{!-- {{else}} --}}
+{{/each}}
+<h3>Create user form </h3>
+<div class="card">
+    <div class="card-body">
+        <form action="/user/register" method="post">
+            <label for="name">Name</label>
+                <input type="text" name="name" id="name" class="form-control" required>
+            <label for="email">E-mail</label>
+                <input type="email" name="email" id="email" class="form-control" required>
+            <label for="password">password</label>
+                <input type="password" name="password" id="password" class="form-control" required>
+            <label for="password2">Repeat password</label>
+                <input type="password" name="password2" id="password2" class="form-control" required>
+            <button type="submit" class="btn btn-success mt-4">Create</button>
+        </form>
+    </div>
+</div>

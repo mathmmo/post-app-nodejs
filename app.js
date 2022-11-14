@@ -48,11 +48,10 @@ const Category = require('./models/Category')
 
 
 //Routes
-const adminRoutes = require('./routes/adminRoute')
-const { nextTick } = require('process')
-const { runInNewContext } = require('vm')
-const { post } = require('./routes/adminRoute')
-app.use('/admin', adminRoutes)
+const adminRoute = require('./routes/adminRoute')
+app.use('/admin', adminRoute)
+const userRoute = require('./routes/userRoute')
+app.use('/user', userRoute)
 
 // Others
 app.get('/', (req, res) => {
@@ -111,7 +110,13 @@ app.get('/post/:slug', (req, res) => {
 app.get('/category/:slug', (req, res) => {
     const { slug } = req.params
     Category.findOne({slug: slug}).lean().then((category) => {
-        res.render('./category/index', {category})
+        Post.find({category: category._id}).lean().then((posts) => {
+            res.render('./category/index', {category, posts})
+        }).catch((err) => {
+            console.log(`Category page database error: ${err}`)
+            req.flash('error_msg', 'Comunication with database failed.')
+            res.redirect('/')
+        })
     }).catch((err) => {
         console.log(`Category page database error: ${err}`)
         req.flash('error_msg', 'Comunication with database failed.')

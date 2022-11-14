@@ -1,0 +1,29 @@
+<div class="mb-4 pb-4">
+    <h2 class="mb-0 pb-0">{{category.name}}</h2>
+    <hr style="
+        margin: 0rem 0 !important;
+        opacity: 1;
+        border: 2px black solid;
+        border-radius: 8px;
+    ">
+</div>
+{{#each posts}}
+    <article class="blog-post mb-4 pb-4">
+        <div class="mb-2">
+            <h3 class="mb-0 fst-italic">
+                {{title}}
+            </h3>
+            <small>{{date}}</small> - 
+        </div>
+        <h5>{{description}}</h5>
+        <hr style="
+            width: 90%;
+            position: relative;
+            left: 05%;
+        ">
+        <p class="mb-1">{{content}}</p>
+        <a href="/post/{{slug}}">Keep reading</a>
+    </article>
+{{else}}
+    <h4>This category don't have any posts.</h4>
+{{/each}}

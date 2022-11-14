@@ -1,101 +1,95 @@
-<main class="container mb-4" style="
-    padding: 8pt;
-    background: rgb(253, 247, 229);
-    border-radius: 8px;
-">
-  <div class="p-4 p-md-5 mb-4 rounded text-bg-dark">
-    <div class="col-md-6 px-0">
-      <small class="fst-italic">{{newestPost.category.name}}</small>
-      <h1 class="display-4 fst-italic">{{newestPost.title}}</h1>
-      <p class="lead my-3">{{newestPost.description}}</p>
-      <p class="lead mb-0"><a href="/post/{{newestPost.slug}}" class="text-white fw-bold">Continue reading...</a></p>
-    </div>
+<div class="p-4 p-md-5 mb-4 rounded text-bg-dark">
+  <div class="col-md-6 px-0">
+    <small class="fst-italic">{{newestPost.category.name}}</small>
+    <h1 class="display-4 fst-italic">{{newestPost.title}}</h1>
+    <p class="lead my-3">{{newestPost.description}}</p>
+    <p class="lead mb-0"><a href="/post/{{newestPost.slug}}" class="text-white fw-bold">Continue reading...</a></p>
   </div>
+</div>
 
-  <div class="row mb-2">
-    <div class="col-md-6">
-      <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative" style="
-    background: rgb(255, 246, 219);
+<div class="row mb-2">
+  <div class="col-md-6">
+    <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative" style="
+  background: rgb(255, 246, 219);
 ">
-        <div class="col p-4 d-flex flex-column position-static">
-          <strong class="d-inline-block mb-2 text-primary">{{importantPost.category.name}}</strong>
-          <h3 class="mb-0">{{importantPost.title}}</h3>
-          <div class="mb-1 text-muted">{{importantPost.date }}</div>
-          <p class="card-text mb-auto">{{importantPost.description}}</p>
-          <a href="/post/{{importantPost.slug}}" style="text-decoration: none; color: inherit;" class="stretched-link">Continue reading...</a>
-        </div>
-        <div class="col-auto d-none d-lg-block">
-          <svg class="bd-placeholder-img" width="200" height="250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
-        </div>
+      <div class="col p-4 d-flex flex-column position-static">
+        <strong class="d-inline-block mb-2 text-primary">{{importantPost.category.name}}</strong>
+        <h3 class="mb-0">{{importantPost.title}}</h3>
+        <div class="mb-1 text-muted">{{importantPost.date }}</div>
+        <p class="card-text mb-auto">{{importantPost.description}}</p>
+        <a href="/post/{{importantPost.slug}}" style="text-decoration: none; color: inherit;" class="stretched-link">Continue reading...</a>
       </div>
-    </div>
-    <div class="col-md-6">
-      <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative" style="
-    background: rgb(255, 246, 219);
-">
-        <div class="col p-4 d-flex flex-column position-static">
-          <strong class="d-inline-block mb-2 text-primary">{{newsPost.category.name}}</strong>
-          <h3 class="mb-0">{{newsPost.title}}</h3>
-          <div class="mb-1 text-muted">{{newsPost.date }}</div>
-          <p class="card-text mb-auto">{{newsPost.description}}</p>
-          <a href="/post/{{newsPost.slug}}" style="text-decoration: none; color: inherit;" class="stretched-link">Continue reading...</a>
-        </div>
-        <div class="col-auto d-none d-lg-block">
-          <svg class="bd-placeholder-img" width="200" height="250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
-        </div>
+      <div class="col-auto d-none d-lg-block">
+        <svg class="bd-placeholder-img" width="200" height="250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
       </div>
     </div>
   </div>
-  <div class="row g-5">
-    <div class="col-md-8">
-      {{#each posts}}
-        <article class="blog-post mb-4 pb-4">
-          <div class="mb-2">
-            <h3 class="mb-0 fst-italic">
-              {{title}}
-            </h3>
-            <small>{{date}}</small> - 
-            <small>{{category.name}}</small>
-          </div>
-          <p>{{description}}</p>
-          <hr>
-          <p class="mb-1">{{content}}</p>
-          <a href="/post/{{slug}}">Keep reading</a>
-        </article>
-      {{else}}
-        <article class="blog-post">
-          <h3 class="fst-italic">
-            Posts not found.
+  <div class="col-md-6">
+    <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative" style="
+  background: rgb(255, 246, 219);
+">
+      <div class="col p-4 d-flex flex-column position-static">
+        <strong class="d-inline-block mb-2 text-primary">{{newsPost.category.name}}</strong>
+        <h3 class="mb-0">{{newsPost.title}}</h3>
+        <div class="mb-1 text-muted">{{newsPost.date }}</div>
+        <p class="card-text mb-auto">{{newsPost.description}}</p>
+        <a href="/post/{{newsPost.slug}}" style="text-decoration: none; color: inherit;" class="stretched-link">Continue reading...</a>
+      </div>
+      <div class="col-auto d-none d-lg-block">
+        <svg class="bd-placeholder-img" width="200" height="250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row g-5">
+  <div class="col-md-8">
+    {{#each posts}}
+      <article class="blog-post mb-4 pb-4">
+        <div class="mb-2">
+          <h3 class="mb-0 fst-italic">
+            {{title}}
           </h3>
-        </article>
-      {{/each}}
-    </div>
-    <div class="col-md-4">
-      <div class="position-sticky" style="top: 2rem;">
-        <div class="p-4 mb-3 rounded">
-          <h4 class="fst-italic">About</h4>
-          <p class="mb-0">I followed a brief tutorial to learn the basic concepts of NodeJS, communicate with MongoDB and use handlebars to create views and send back-end information to front-end.</p>
+          <small>{{date}}</small> - 
+          <small>{{category.name}}</small>
         </div>
+        <h5>{{description}}</h5>
+        <hr>
+        <p class="mb-1">{{content}}</p>
+        <a href="/post/{{slug}}">Keep reading</a>
+      </article>
+    {{else}}
+      <article class="blog-post">
+        <h3 class="fst-italic">
+          Posts not found.
+        </h3>
+      </article>
+    {{/each}}
+  </div>
+  <div class="col-md-4">
+    <div class="position-sticky" style="top: 2rem;">
+      <div class="p-4 mb-3 rounded">
+        <h4 class="fst-italic">About</h4>
+        <p class="mb-0">I followed a brief tutorial to learn the basic concepts of NodeJS, communicate with MongoDB and use handlebars to create views and send back-end information to front-end.</p>
+      </div>
 
-        <div class="p-4">
-          <h4 class="fst-italic">Archives</h4>
-          <ol class="list-unstyled mb-0">
-            {{#each categories}}
-              <li><a href="/category/{{slug}}">{{name}}</a></li>
-            {{else}}
-              <li><a href="/admin/categories/add">Create a category</a></li>
-            {{/each}}
-          </ol>
-        </div>
+      <div class="p-4">
+        <h4 class="fst-italic">Archives</h4>
+        <ol class="list-unstyled mb-0">
+          {{#each categories}}
+            <li><a href="/category/{{slug}}">{{name}}</a></li>
+          {{else}}
+            <li><a href="/admin/categories/add">Create a category</a></li>
+          {{/each}}
+        </ol>
+      </div>
 
-        <div class="p-4">
-          <h4 class="fst-italic">Elsewhere</h4>
-          <ol class="list-unstyled">
-            <li><a href="#">GitHub</a></li>
-            <li><a href="#">Twitter</a></li>
-            <li><a href="#">Facebook</a></li>
-          </ol>
-        </div>
+      <div class="p-4">
+        <h4 class="fst-italic">Elsewhere</h4>
+        <ol class="list-unstyled">
+          <li><a href="#">GitHub</a></li>
+          <li><a href="#">Twitter</a></li>
+          <li><a href="#">Facebook</a></li>
+        </ol>
       </div>
     </div>
   </div>
