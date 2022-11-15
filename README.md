@@ -31,7 +31,7 @@ Use the package manager [npm](https://www.npmjs.com/) to install Post-App.
 npm init -y
 ```
 
-## Usage
+## Some thanks
 
 ```javascript
 const agradecimentos = [
