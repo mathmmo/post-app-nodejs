@@ -1,0 +1,64 @@
+@charset "UTF-8";
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: "Playfair Display", Georgia, "Times New Roman", serif/*rtl:Amiri, Georgia, "Times New Roman", serif*/;
+}
+
+body{
+    background-color: #dddada;
+}
+
+.content-area{
+    min-height: 50rem;
+}
+
+.card-title {
+    margin-left: 1rem;
+}
+
+.btn-card{
+    width: 80px;
+}
+
+.blog-footer {
+    padding: 1rem 0;
+    color: #727272;
+    text-align: center;
+    background-color: #f9f9f9;
+    border-top: .3rem solid #e5e5e5;
+}
+.blog-footer p:last-child {
+    margin-bottom: 0;
+}
+
+/* SingIn */
+.singInBody {
+  /* height: 100%; */
+  display: flex;
+  align-items: center;
+  padding-top: 40px;
+  padding-bottom: 40px;
+  background-color: #f5f5f5;
+  border-radius: 8px;
+}
+
+.form-signin {
+  max-width: 440px;
+  padding: 15px;
+}
+
+.form-signin .form-floating:focus-within {
+  z-index: 2;
+}
+
+.form-signin input[type="email"] {
+  margin-bottom: -1px;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.form-signin input[type="password"] {
+  margin-bottom: 10px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}

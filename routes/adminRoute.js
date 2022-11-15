@@ -1,14 +1,15 @@
 const router = require('express').Router()
 const Category = require('../models/Category')
 const Post = require('../models/Post')
+const { isAdmin } = require('../helpers/roleAuth')
 
-router.get('/', (req, res) => {
+router.get('/', isAdmin, (req, res) => {
     res.render('admin/index.handlebars')
 })
 
 
 //Categories Routes
-    router.get('/categories', async (req, res) => {
+    router.get('/categories', isAdmin, async (req, res) => {
         await Category.find().sort({date: 'desc'}).lean().then((categories) => {
             categories.forEach((category) => {
                 category.date = category.date.toDateString()
@@ -20,11 +21,11 @@ router.get('/', (req, res) => {
         })
     })
 
-    router.get('/categories/add', (req, res) => {
+    router.get('/categories/add', isAdmin, (req, res) => {
         res.render('admin/addcategories')
     })
 
-    router.post('/categories/new', async (req, res) => {
+    router.post('/categories/new', isAdmin, async (req, res) => {
         const { name, slug } = req.body
         const errors = [];
         if(!name || typeof name == undefined || name == null){
@@ -68,7 +69,7 @@ router.get('/', (req, res) => {
         }
     })
 
-    router.post('/categories/edit', async(req, res) => {
+    router.post('/categories/edit', isAdmin, async(req, res) => {
         const {id, name, slug} = req.body
         const errors = [];
         if(!name || typeof name == undefined || name == null){
@@ -107,7 +108,7 @@ router.get('/', (req, res) => {
         }
     })
 
-    router.get('/categories/edit/:id', async(req, res) => {
+    router.get('/categories/edit/:id', isAdmin, async(req, res) => {
         const { id } = req.params
         await Category.findOne({_id: id}).lean().then((category) => {
             res.render('admin/editcategories', {category: category})
@@ -117,7 +118,7 @@ router.get('/', (req, res) => {
         })
     })
 
-    router.post('/categories/delete', async(req, res) => {
+    router.post('/categories/delete', isAdmin, async(req, res) => {
         const { id } = req.body
         await Category.deleteOne({_id: id}).then((category) => {
             req.flash('success_msg', 'Category deleted.')
@@ -129,7 +130,7 @@ router.get('/', (req, res) => {
     })
 
 //Posts Routes
-    router.get('/posts', async (req, res) => {
+    router.get('/posts', isAdmin, async (req, res) => {
         await Post.find()
         .populate({
             path: 'category',
@@ -146,7 +147,7 @@ router.get('/', (req, res) => {
         })
     })
 
-    router.get('/posts/add', (req, res) => {
+    router.get('/posts/add', isAdmin, (req, res) => {
         Category.find().lean().then((categories) => {
             res.render('admin/addpost', {categories: categories})
         }).catch((error) => {
@@ -156,7 +157,7 @@ router.get('/', (req, res) => {
         })
     })
 
-    router.post('/posts/new', async (req, res) => {
+    router.post('/posts/new', isAdmin, async (req, res) => {
         const { title, slug, description, content, category } = req.body
         const errors = [];
         if(title.length < 2 || typeof title == undefined || title == null){
@@ -214,7 +215,7 @@ router.get('/', (req, res) => {
         }
     })
 
-    router.post('/posts/delete', async(req, res) => {
+    router.post('/posts/delete', isAdmin, async(req, res) => {
         const { id } = req.body
         await Post.deleteOne({_id: id}).then((category) => {
             req.flash('success_msg', 'Post deleted.')

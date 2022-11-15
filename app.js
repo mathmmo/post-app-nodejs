@@ -1,4 +1,4 @@
-//Load Modules
+//Module.load
 require('dotenv').config()
 const express = require('express')
 const app = express()
@@ -10,20 +10,28 @@ const session = require('express-session')
 const flash = require('connect-flash')
 const Post = require('./models/Post')
 const Category = require('./models/Category')
-
+const adminRoute = require('./routes/adminRoute')
+const userRoute = require('./routes/userRoute')
+const passport = require('passport')
+require('./config/auth')(passport)
 
 //Config
-    //Session & Flash
+    //Session, Flash & passport
         app.use(session({
             secret: "Curso de Node",
             resave: true,
             saveUninitialized: true,
         }))
+        app.use(passport.initialize())
+        app.use(passport.session())
         app.use(flash())
     //Middlewear
         app.use((req, res, next) => {
             res.locals.success_msg = req.flash('success_msg')
             res.locals.error_msg = req.flash('error_msg')
+            res.locals.error = req.flash('error')
+            res.locals.user = req.user || null
+            res.locals.role = req.user ? req.user.role === 'admin' ? req.user.role : null : null
             next()
         })
     // Data Base Connection - Mongoose
@@ -48,9 +56,7 @@ const Category = require('./models/Category')
 
 
 //Routes
-const adminRoute = require('./routes/adminRoute')
 app.use('/admin', adminRoute)
-const userRoute = require('./routes/userRoute')
 app.use('/user', userRoute)
 
 // Others
@@ -99,6 +105,7 @@ app.get('/', (req, res) => {
 app.get('/post/:slug', (req, res) => {
     const { slug } = req.params
     Post.findOne({slug: slug}).lean().then((post) => {
+        post.date = post.date.toDateString()
         res.render('./post/index', {post})
     }).catch((err) => {
         console.log(`Post page database error: ${err}`)
@@ -111,6 +118,9 @@ app.get('/category/:slug', (req, res) => {
     const { slug } = req.params
     Category.findOne({slug: slug}).lean().then((category) => {
         Post.find({category: category._id}).lean().then((posts) => {
+            posts.forEach((post) => {
+                post.date = post.date.toDateString()
+            })
             res.render('./category/index', {category, posts})
         }).catch((err) => {
             console.log(`Category page database error: ${err}`)
