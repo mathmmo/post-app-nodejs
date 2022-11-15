@@ -42,7 +42,7 @@ require('./config/auth')(passport)
             .connect(`mongodb+srv://${DB_USER}:${DB_PASSWORD}@postappcluster.oolow9t.mongodb.net/?retryWrites=true&w=majority`)
             .then(() => {
                 console.log('Connected to MongoDB PostAppCluster')
-                app.listen(4000)
+                app.listen(process.env.PORT || 8089)
             })
             .catch((err) => console.log(err))
     // Template Engine
